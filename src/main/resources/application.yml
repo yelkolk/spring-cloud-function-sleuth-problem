@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    stream:
+      source: demoConsumer
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtual-host: /
+      bindings:
+        demoConsumer-out-0:
+          binder: rabbit
+          contentType: application/json
+          destination: demo.destination
+      rabbit:
+        bindings:
+          demoConsumer-out-0:
+            producer:
+              declareExchange: true
+              routingKeyExpression: '''demo.key'''
